@@ -1,0 +1,21 @@
+db:
+  image: postgres:latest
+  ports: 
+    - "5432:5432"
+
+gems:
+  image: busybox:buildroot-2014.02
+  volumes:
+    - /gems
+
+web:
+  build: .
+  command: bundle exec rails s -b 0.0.0.0
+  ports:
+    - "3000:3000"
+  links:
+    - db
+  volumes:
+    - ".:/home/app/webapp"
+  volumes_from:
+    - gems
